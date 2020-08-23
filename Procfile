@@ -1,1 +1,1 @@
-web: yarn build
+web: ts-node src/server.ts
