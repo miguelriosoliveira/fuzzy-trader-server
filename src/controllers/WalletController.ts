@@ -32,8 +32,10 @@ export default class WalletController {
 				}
 
 				const balance = await Balance.findOne();
-				balance?.value -= asset.value * asset.quantity;
-				await balance?.save();
+				if (balance) {
+					balance.value -= asset.value * asset.quantity;
+					await balance.save();
+				}
 			}
 
 			const wallet = await Wallet.find();
