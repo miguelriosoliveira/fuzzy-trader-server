@@ -1,6 +1,8 @@
+/* eslint-disable no-await-in-loop */
 import { Response, Request } from 'express';
 
-import db from '../database/connection';
+import Balance from '../models/Balance';
+import Wallet from '../models/Wallet';
 
 type CreateBodyProps = Array<{
 	symbol: string;
@@ -10,7 +12,7 @@ type CreateBodyProps = Array<{
 
 export default class WalletController {
 	async index(request: Request, response: Response): Promise<Response> {
-		const wallet = await db('wallet').select('*');
+		const wallet = await Wallet.find();
 		return response.json(wallet);
 	}
 
@@ -20,23 +22,21 @@ export default class WalletController {
 		try {
 			// eslint-disable-next-line no-restricted-syntax
 			for (const asset of assets) {
-				const [assetFound] = await db('wallet').where('symbol', asset.symbol).select('*');
+				const assetFound = await Wallet.findOne({ symbol: asset.symbol });
 
 				if (assetFound) {
-					const assetUpdated = {
-						...assetFound,
-						quantity: assetFound.quantity + asset.quantity,
-					};
-					await db('wallet').where('symbol', asset.symbol).update(assetUpdated);
+					assetFound.quantity += asset.quantity;
+					await assetFound.save();
 				} else {
-					await db('wallet').insert(asset);
+					await Wallet.create(asset);
 				}
 
-				const [balance] = await db('balance').select('*');
-				await db('balance').update({ value: balance.value - asset.value * asset.quantity });
+				const balance = await Balance.findOne();
+				balance?.value -= asset.value * asset.quantity;
+				await balance?.save();
 			}
 
-			const wallet = await db('wallet').select('*');
+			const wallet = await Wallet.find();
 			return response.json(wallet);
 		} catch (error) {
 			console.error(error);

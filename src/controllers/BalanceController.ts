@@ -1,10 +1,10 @@
 import { Response, Request } from 'express';
 
-import db from '../database/connection';
+import Balance from '../models/Balance';
 
 export default class BalanceController {
 	async index(request: Request, response: Response): Promise<Response> {
-		const [balance] = await db('balance').select('*');
+		const balance = await Balance.findOne();
 		return response.json(balance.value);
 	}
 }
