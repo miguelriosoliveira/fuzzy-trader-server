@@ -4,9 +4,11 @@
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
-		"build": "tsc && node dist/src/server.js",
-		"seed": "ts-node src/scripts/seed.ts"
+		"dev": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
+		"seed": "ts-node src/scripts/seed.ts",
+		"start": "node dist/src/server.js",
+		"build": "tsc",
+		"postinstall": "yarn build"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.7",
