@@ -7,8 +7,7 @@
 		"dev": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
 		"seed": "ts-node src/scripts/seed.ts",
 		"start": "node dist/server.js",
-		"build": "tsc",
-		"postinstall": "yarn build"
+		"build": "tsc"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.7",
