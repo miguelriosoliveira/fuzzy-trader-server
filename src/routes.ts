@@ -7,6 +7,8 @@ const routes = express.Router();
 const balanceController = new BalanceController();
 const walletController = new WalletController();
 
+routes.get('/', (request, response) => response.json({ hello: 'world' }));
+
 routes.get('/balance', balanceController.index);
 
 routes.get('/wallet', walletController.index);
