@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
+
 import { Response, Request } from 'express';
 
-import Balance from '../models/Balance';
 import Wallet from '../models/Wallet';
 
 type CreateBodyProps = Array<{
@@ -29,12 +29,6 @@ export default class WalletController {
 					await assetFound.save();
 				} else {
 					await Wallet.create(asset);
-				}
-
-				const balance = await Balance.findOne();
-				if (balance) {
-					balance.value -= asset.value * asset.quantity;
-					await balance.save();
 				}
 			}
 
