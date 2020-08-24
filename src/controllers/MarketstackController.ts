@@ -8,7 +8,6 @@ export default class MarketstackController {
 	async index(request: Request, response: Response): Promise<Response> {
 		try {
 			const { route, params } = request.query;
-
 			console.log({ route, params });
 
 			const marketstackResponse = await marketstackAPI.get(route as string, {
